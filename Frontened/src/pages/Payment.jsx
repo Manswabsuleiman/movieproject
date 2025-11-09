@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 
 // ✅ Use your deployed backend URL
-const BACKEND_URL = "https://livelink-cu2l.onrender.com";
+const BACKEND_URL = "https://livelink-cu2l.onrender.com/api/pesapal/ipn";
 
 const Payment = () => {
   const [email, setEmail] = useState("");
