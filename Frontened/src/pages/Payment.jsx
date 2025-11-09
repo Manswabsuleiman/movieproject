@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-// ✅ Use your deployed backend URL
-const BACKEND_URL = "https://livelink-cu2l.onrender.com/api/pesapal/ipn";
+// 🟢 FIX APPLIED: Use only the base domain for the backend URL.
+// The payment endpoint '/api/pesapal/order' will be appended to this base.
+const BACKEND_URL = "https://livelink-cu2l.onrender.com"; 
 
 const Payment = () => {
   const [email, setEmail] = useState("");
@@ -28,6 +29,7 @@ const Payment = () => {
       setLoading(true);
       setMessage("");
 
+      // 🟢 Correct API call URL: https://livelink-cu2l.onrender.com/api/pesapal/order
       const response = await axios.post(`${BACKEND_URL}/api/pesapal/order`, {
         email,
         phone,
@@ -43,10 +45,34 @@ const Payment = () => {
       }
     } catch (error) {
       console.error(error);
-      setMessage("Failed to initiate payment. Please try again.");
+      // More robust error messaging
+      const errorMessage = error.response?.data?.message || error.message || "Failed to initiate payment. Please try again.";
+      setMessage(errorMessage);
     } finally {
       setLoading(false);
     }
+  };
+
+  // Reusable styles for readability (kept as you provided them)
+  const inputStyle = {
+    width: "100%",
+    padding: "12px",
+    marginBottom: "15px",
+    borderRadius: "8px",
+    border: "1px solid #444",
+    backgroundColor: "#222",
+    color: "#fff",
+  };
+
+  const buttonStyle = {
+    backgroundColor: "#ae0914",
+    color: "#fff",
+    border: "none",
+    padding: "12px 24px",
+    borderRadius: "8px",
+    cursor: "pointer",
+    width: "100%",
+    marginTop: "10px",
   };
 
   return (
@@ -135,28 +161,6 @@ const Payment = () => {
       </div>
     </div>
   );
-};
-
-// ✅ Reusable styles
-const inputStyle = {
-  width: "100%",
-  padding: "12px",
-  marginBottom: "15px",
-  borderRadius: "8px",
-  border: "1px solid #444",
-  backgroundColor: "#222",
-  color: "#fff",
-};
-
-const buttonStyle = {
-  backgroundColor: "#ae0914",
-  color: "#fff",
-  border: "none",
-  padding: "12px 24px",
-  borderRadius: "8px",
-  cursor: "pointer",
-  width: "100%",
-  marginTop: "10px",
 };
 
 export default Payment;
